@@ -9,10 +9,28 @@
 }
 
 body{
-    color:var(--branco)
-    backgroud-color: var(var(--cor-e-fundo))
-    front-family: var(var(--Playfair))
+    color:var(--branco);
+    background-color: var(var(--cor-e-fundo));
+    font-family: var(var(--Playfair));
 
 }
-
-
+ conteudo-senha{
+    margin-top: 80px;
+    background: #000080;
+ }
+ #campo-senha{
+    background-color: #FF0000;
+    border: none;
+    color: var(--branco);
+    font-size: 40px;
+    width: 70px;
+ }
+#campo-senha:focus{
+    outline:none;
+}
+.conteudo-senha{
+    max-width: 1200px;
+    margin: 0 auto;
+}
+parametro-senha_botoes{
+}
