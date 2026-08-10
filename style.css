@@ -1,36 +1,113 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 :root{
-    --branco: white;
-    --cor-e-fundo:#000080;
-    --fundo-senha:#FF0000;
-    --fundo-texto:#9E2A3A;
-    --borda: #3A2525;
-    --Playfair: "Playfair Display" ,Playfair Display
+    --vermelho: rgb(0, 96, 175);
+    --cor-de-fundo: #4cb6fc;
+    --fundo-senha: #052a3f;
+    --fundo-texto: #6FD1D7;
+    --borda: #00445f;
+    --fonte: "Fira Sans", sans-serif;
+
+}
+
+*{
+    font-weight:400;
 }
 
 body{
-    color:var(--branco);
-    background-color: var(var(--cor-e-fundo));
-    font-family: var(var(--Playfair));
-
+    color: var(--vermelho);
+    background-color: var(--cor-de-fundo);
+    font-family: var(--fonte);
 }
- conteudo-senha{
+
+.titulo-principal{
+    font-family: var(--fonte);
+}
+
+.titulo-secundario{
+    font-size: 24px;
+    text-align: center;
+    margin: 80px;
+}
+
+.conteudo-titulo{
+    text-align: center;
     margin-top: 80px;
-    background: #000080;
- }
- #campo-senha{
-    background-color: #FF0000;
+}
+
+.cadeado-conteudo{
+    width: 100px;
+}
+.conteudo-senha{
+    margin-top: 80px;
+    background: var(--fundo-senha);
+    padding: 24px;
+    border-bottom: 6px solid var(--borda);
+}
+#campo-senha{
+    background-color: var(--fundo-senha);
     border: none;
-    color: var(--branco);
+    color: var(--vermelho);
     font-size: 40px;
-    width: 70px;
- }
+    width: 50%;
+}
+
 #campo-senha:focus{
     outline:none;
 }
+
 .conteudo-senha{
     max-width: 1200px;
     margin: 0 auto;
 }
-parametro-senha_botoes{
+.parametro{
+    background-color: var(--cor-de-fundo) ;
+    border: 2px solid var(--borda);
+    margin-top: 32px;
+    padding: 24px;
+}
+.parametro-senha_titulo{
+    font-size: 24px;
+}
+.parametro-coluna_senha{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.parametro-senha{
+    width: 50%;
+    margin: 0 auto;
+}
+.parametro-senha_botoes{
+    display: flex;
+    justify-content: center;
+}
+.parametro-senha_botão{
+    background-color: var(--fundo-texto);
+    color: var(--vermelho);
+    border: 2px solid var(--borda);
+    border-bottom: 24px;
+    cursor: pointer;
+}
+.parametro-senha_texto{
+    padding: 24px;
+    border-top: 2px solid var(--borda);
+    border-bottom: 2px solid var(--borda);
+    margin: 0;
+}
+.label{
+    font-size:20px;
+}
+.checkbox{
+    width: 20px;
+    height: 20px;
+    width: 100%
+}
+.barra{
+    background-color:aqua;
+}
+
+@media screen and(min-width: 768px){
+    .parametro-coluna_senha{
+        flex-direction: row;
+    }
 }
