@@ -1,76 +1,58 @@
-// ===== GERADOR DE SENHAS COMPLETO (CORRIGIDO) =====
+// ===== GERADOR DE SENHAS OTIMIZADO =====
 
-// 1. SELEÇÃO DE ELEMENTOS E VARIÁVEIS INICIAIS
+// 1. DICIONÁRIOS DE CARACTERES
+const CARACTERES = {
+    maiusculas: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    minusculas: 'abcdefghijklmnopqrstuvwxyz',
+    numeros: '0123456789',
+    simbolos: '!@%*?'
+};
+
+// 2. SELEÇÃO DE ELEMENTOS E CONFIGURAÇÃO INICIAL
 const numeroSenha = document.querySelector('.parametro-senha__texto');
+const campoSenha = document.querySelector('#campo-senha');
+const forcaSenha = document.querySelector('.forca');
+const checkboxes = document.querySelectorAll('.checkbox');
+const [botaoDiminuir, botaoAumentar] = document.querySelectorAll('.parametro-senha__botao');
+
 let tamanhoSenha = 12;
 numeroSenha.textContent = tamanhoSenha;
-
-const letrasMaiusculas = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'; // <- ordem corrigida (estava ...TUVXYWZ)
-const letrasMinusculas = 'abcdefghijklmnopqrstuvwxyz'; // <- ordem corrigida
-const numeros = '0123456789';
-const simbolos = '!@%*?';
-
-const campoSenha = document.querySelector('#campo-senha');
-
-// CORREÇÃO PRINCIPAL:
-// No HTML os checkboxes têm class="checkbox" (e não "parametro-senha__checkbox").
-// Por isso o seletor original retornava uma lista vazia e o script quebrava
-// assim que tentava ler checkbox[0].checked.
-const checkbox = document.querySelectorAll('.checkbox');
-
-const botoes = document.querySelectorAll('.parametro-senha__botao');
-const forcaSenha = document.querySelector('.forca');
-
-// 2. CONTROLE DE TAMANHO DA SENHA
-botoes[0].onclick = diminuiTamanho;
-botoes[1].onclick = aumentaTamanho;
-
-function diminuiTamanho() {
-    if (tamanhoSenha > 1) {
-        tamanhoSenha--;
-    }
-    numeroSenha.textContent = tamanhoSenha;
-    geraSenha();
-}
-
-function aumentaTamanho() {
-    if (tamanhoSenha < 20) {
-        tamanhoSenha++;
-    }
-    numeroSenha.textContent = tamanhoSenha;
-    geraSenha();
-}
 
 // 3. GERAÇÃO DA SENHA ALEATÓRIA
 function geraSenha() {
     let alfabeto = '';
-    if (checkbox[0].checked) { alfabeto += letrasMaiusculas; }
-    if (checkbox[1].checked) { alfabeto += letrasMinusculas; }
-    if (checkbox[2].checked) { alfabeto += numeros; }
-    if (checkbox[3].checked) { alfabeto += simbolos; }
+    
+    // Mapeamento direto usando os IDs ou ordem dos checkboxes
+    if (checkboxes[0]?.checked) alfabeto += CARACTERES.maiusculas;
+    if (checkboxes[1]?.checked) alfabeto += CARACTERES.minusculas;
+    if (checkboxes[2]?.checked) alfabeto += CARACTERES.numeros;
+    if (checkboxes[3]?.checked) alfabeto += CARACTERES.simbolos;
 
-    // CORREÇÃO EXTRA: se nenhum checkbox estiver marcado, o alfabeto fica
-    // vazio e a senha antiga virava "undefinedundefined...".
-    // Agora avisamos o usuário e paramos a função antes de gerar algo errado.
-    if (alfabeto === '') {
+    if (!alfabeto) {
         campoSenha.value = 'Selecione ao menos uma opção';
-        forcaSenha.classList.remove('fraca', 'media', 'forte');
+        forcaSenha.className = 'forca'; // Reseta todas as classes de força
         return;
     }
 
+    // Geração segura usando criptografia do navegador (opcional, mas recomendado para senhas)
     let senha = '';
+    const valoresAleatorios = new Uint32Array(tamanhoSenha);
+    window.crypto.getRandomValues(valoresAleatorios);
+
     for (let i = 0; i < tamanhoSenha; i++) {
-        let numeroAleatorio = Math.floor(Math.random() * alfabeto.length);
-        senha += alfabeto[numeroAleatorio];
+        senha += alfabeto[valoresAleatorios[i] % alfabeto.length];
     }
-    campoSenha.value = senha;
+
+    campoSenha.value = senate;
     classificaSenha(alfabeto.length);
 }
 
-// 4. CÁLCULO DE ENTROPIA E CLASSIFICAÇÃO DA FORÇA
+// 4. CÁLCULO DE ENTROPIA E CLASSIFICAÇÃO
 function classificaSenha(tamanhoAlfabeto) {
-    let entropia = tamanhoSenha * Math.log2(tamanhoAlfabeto);
-    forcaSenha.classList.remove('fraca', 'media', 'forte');
+    const entropia = tamanhoSenha * Math.log2(tamanhoAlfabeto);
+    
+    // Reseta as classes mantendo a base
+    forcaSenha.className = 'forca'; 
 
     if (entropia > 57) {
         forcaSenha.classList.add('forte');
@@ -81,13 +63,20 @@ function classificaSenha(tamanhoAlfabeto) {
     }
 }
 
-// 5. LISTENERS NOS CHECKBOXES
-// Adicionei isso: antes, marcar/desmarcar uma checkbox não gerava uma nova
-// senha automaticamente. Agora, toda vez que o usuário mudar uma opção,
-// a senha é recalculada na hora.
-checkbox.forEach(function (item) {
-    item.onchange = geraSenha;
-});
+// 5. CONTROLE DE TAMANHO (LISTENERS)
+function atualizarTamanho(novoTamanho) {
+    if (novoTamanho >= 1 && novoTamanho <= 20) {
+        tamanhoSenha = novoTamanho;
+        numeroSenha.textContent = tamanhoSenha;
+        geraSenha();
+    }
+}
 
-// Inicializa a primeira geração de senha
+botaoDiminuir.onclick = () => atualizarTamanho(tamanhoSenha - 1);
+botaoAumentar.onclick = () => atualizarTamanho(tamanhoSenha + 1);
+
+// 6. EVENTOS DOS CHECKBOXES E INICIALIZAÇÃO
+checkboxes.forEach(item => item.onchange = geraSenha);
+
+// Inicialização automática
 geraSenha();
