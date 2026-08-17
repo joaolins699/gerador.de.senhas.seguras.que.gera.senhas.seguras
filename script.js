@@ -11,13 +11,11 @@ const numeros = '0123456789';
 const simbolos = '!@%*?';
 
 const campoSenha = document.querySelector('#campo-senha');
-// Ajustado para pegar os inputs corretos de dentro da classe do HTML
 const checkboxes = document.querySelectorAll('.parametro-senha-checkbox input');
 const botoes = document.querySelectorAll('.parametro-senha__botao');
 const forcaSenha = document.querySelector('.forca');
 
 // 2. CONTROLE DE TAMANHO DA SENHA
-// CORREÇÃO: Adicionado os índices [0] e [1] para identificar qual botão é qual
 botoes[0].onclick = diminuiTamanho;
 botoes[1].onclick = aumentaTamanho;
 
@@ -46,7 +44,7 @@ checkboxes.forEach(checkbox => {
 function geraSenha() {
     let alfabeto = '';
     
-    // CORREÇÃO: Adicionado os índices, [1], [2], [3] para ler cada caixa individualmente
+    // Verificação individual de cada checkbox usando o índice correto
     if (checkboxes[0].checked) { alfabeto += letrasMaiusculas; }
     if (checkboxes[1].checked) { alfabeto += letrasMinusculas; }
     if (checkboxes[2].checked) { alfabeto += numeros; }
