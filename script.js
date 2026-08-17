@@ -1,4 +1,4 @@
-// ===== GERADOR DE SENHAS OTIMIZADO (CORRIGIDO) =====
+// ===== GERADOR DE SENHAS OTIMIZADO =====
 
 // 1. DICIONÁRIOS DE CARACTERES
 const CARACTERES = {
@@ -22,12 +22,13 @@ numeroSenha.textContent = tamanhoSenha;
 function geraSenha() {
     let alfabeto = '';
     
-    // CORREÇÃO: Verificação correta dos índices dos checkboxes
-    if (checkboxes[0]?.checked) alfabeto += CARACTERES.maiusculas;
-    if (checkboxes[1]?.checked) alfabeto += CARACTERES.minusculas;
-    if (checkboxes[2]?.checked) alfabeto += CARACTERES.numeros;
-    if (checkboxes[3]?.checked) alfabeto += CARACTERES.simbolos;
+    // Verifica cada checkbox pelo seu índice correto na NodeList
+    if (checkboxes[0] && checkboxes[0].checked) alfabeto += CARACTERES.maiusculas;
+    if (checkboxes[1] && checkboxes[1].checked) alfabeto += CARACTERES.minusculas;
+    if (checkboxes[2] && checkboxes[2].checked) alfabeto += CARACTERES.numeros;
+    if (checkboxes[3] && checkboxes[3].checked) alfabeto += CARACTERES.simbolos;
 
+    // Se nenhum estiver marcado, interrompe e avisa o usuário
     if (!alfabeto) {
         campoSenha.value = 'Selecione ao menos uma opção';
         if (forcaSenha) forcaSenha.className = 'forca'; 
@@ -35,7 +36,7 @@ function geraSenha() {
     }
 
     let senha = '';
-    // Uso do crypto para máxima segurança
+    // Uso da API Crypto do navegador para gerar números aleatórios altamente seguros
     const valoresAleatorios = new Uint32Array(tamanhoSenha);
     window.crypto.getRandomValues(valoresAleatorios);
 
@@ -43,16 +44,17 @@ function geraSenha() {
         senha += alfabeto[valoresAleatorios[i] % alfabeto.length];
     }
 
-    // CORREÇÃO: estava escrito "senate" em vez de "senha"
     campoSenha.value = senha;
     classificaSenha(alfabeto.length);
 }
 
-// 4. CÁLCULO DE ENTROPIA E CLASSIFICAÇÃO
+// 4. CÁLCULO DE ENTROPIA E CLASSIFICAÇÃO DA FORÇA
 function classificaSenha(tamanhoAlfabeto) {
     if (!forcaSenha) return;
     
     const entropia = tamanhoSenha * Math.log2(tamanhoAlfabeto);
+    
+    // Reseta todas as classes de força anteriores, mantendo apenas a classe base
     forcaSenha.className = 'forca'; 
 
     if (entropia > 57) {
@@ -79,5 +81,5 @@ if (botaoAumentar) botaoAumentar.onclick = () => atualizarTamanho(tamanhoSenha +
 // 6. EVENTOS DOS CHECKBOXES E INICIALIZAÇÃO
 checkboxes.forEach(item => item.onchange = geraSenha);
 
-// Inicialização automática
+// Inicialização automática ao carregar a página
 geraSenha();
