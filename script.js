@@ -1,4 +1,4 @@
-// ===== GERADOR DE SENHAS OTIMIZADO =====
+// ===== GERADOR DE SENHAS OTIMIZADO (CORRIGIDO) =====
 
 // 1. DICIONÁRIOS DE CARACTERES
 const CARACTERES = {
@@ -22,7 +22,7 @@ numeroSenha.textContent = tamanhoSenha;
 function geraSenha() {
     let alfabeto = '';
     
-    // Mapeamento direto usando os IDs ou ordem dos checkboxes
+    // CORREÇÃO: Verificação correta dos índices dos checkboxes
     if (checkboxes[0]?.checked) alfabeto += CARACTERES.maiusculas;
     if (checkboxes[1]?.checked) alfabeto += CARACTERES.minusculas;
     if (checkboxes[2]?.checked) alfabeto += CARACTERES.numeros;
@@ -30,12 +30,12 @@ function geraSenha() {
 
     if (!alfabeto) {
         campoSenha.value = 'Selecione ao menos uma opção';
-        forcaSenha.className = 'forca'; // Reseta todas as classes de força
+        if (forcaSenha) forcaSenha.className = 'forca'; 
         return;
     }
 
-    // Geração segura usando criptografia do navegador (opcional, mas recomendado para senhas)
     let senha = '';
+    // Uso do crypto para máxima segurança
     const valoresAleatorios = new Uint32Array(tamanhoSenha);
     window.crypto.getRandomValues(valoresAleatorios);
 
@@ -43,15 +43,16 @@ function geraSenha() {
         senha += alfabeto[valoresAleatorios[i] % alfabeto.length];
     }
 
-    campoSenha.value = senate;
+    // CORREÇÃO: estava escrito "senate" em vez de "senha"
+    campoSenha.value = senha;
     classificaSenha(alfabeto.length);
 }
 
 // 4. CÁLCULO DE ENTROPIA E CLASSIFICAÇÃO
 function classificaSenha(tamanhoAlfabeto) {
-    const entropia = tamanhoSenha * Math.log2(tamanhoAlfabeto);
+    if (!forcaSenha) return;
     
-    // Reseta as classes mantendo a base
+    const entropia = tamanhoSenha * Math.log2(tamanhoAlfabeto);
     forcaSenha.className = 'forca'; 
 
     if (entropia > 57) {
@@ -72,8 +73,8 @@ function atualizarTamanho(novoTamanho) {
     }
 }
 
-botaoDiminuir.onclick = () => atualizarTamanho(tamanhoSenha - 1);
-botaoAumentar.onclick = () => atualizarTamanho(tamanhoSenha + 1);
+if (botaoDiminuir) botaoDiminuir.onclick = () => atualizarTamanho(tamanhoSenha - 1);
+if (botaoAumentar) botaoAumentar.onclick = () => atualizarTamanho(tamanhoSenha + 1);
 
 // 6. EVENTOS DOS CHECKBOXES E INICIALIZAÇÃO
 checkboxes.forEach(item => item.onchange = geraSenha);
