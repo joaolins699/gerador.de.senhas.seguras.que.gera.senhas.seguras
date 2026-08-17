@@ -11,12 +11,13 @@ const numeros = '0123456789';
 const simbolos = '!@%*?';
 
 const campoSenha = document.querySelector('#campo-senha');
-// CORREÇÃO: Ajustado o nome da classe conforme o HTML (hífen em vez de underline)
+// Ajustado para pegar os inputs corretos de dentro da classe do HTML
 const checkboxes = document.querySelectorAll('.parametro-senha-checkbox input');
 const botoes = document.querySelectorAll('.parametro-senha__botao');
 const forcaSenha = document.querySelector('.forca');
 
 // 2. CONTROLE DE TAMANHO DA SENHA
+// CORREÇÃO: Adicionado os índices [0] e [1] para identificar qual botão é qual
 botoes[0].onclick = diminuiTamanho;
 botoes[1].onclick = aumentaTamanho;
 
@@ -36,7 +37,7 @@ function aumentaTamanho() {
     geraSenha();
 }
 
-// Otimização: Adiciona evento de clique nas caixas para atualizar a senha em tempo real
+// Vincula o evento de mudança em cada checkbox para atualizar a senha na hora
 checkboxes.forEach(checkbox => {
     checkbox.onchange = geraSenha;
 });
@@ -44,12 +45,14 @@ checkboxes.forEach(checkbox => {
 // 3. GERAÇÃO DA SENHA ALEATÓRIA
 function geraSenha() {
     let alfabeto = '';
+    
+    // CORREÇÃO: Adicionado os índices, [1], [2], [3] para ler cada caixa individualmente
     if (checkboxes[0].checked) { alfabeto += letrasMaiusculas; }
     if (checkboxes[1].checked) { alfabeto += letrasMinusculas; }
     if (checkboxes[2].checked) { alfabeto += numeros; }
     if (checkboxes[3].checked) { alfabeto += simbolos; }
 
-    // CORREÇÃO: Evita falhas ou senhas com "undefined" se nada estiver marcado
+    // Segurança: se nenhuma caixa estiver marcada, avisa o usuário e para a execução
     if (alfabeto.length === 0) {
         campoSenha.value = "Selecione uma opção";
         classificaSenha(0);
@@ -67,14 +70,13 @@ function geraSenha() {
 
 // 4. CÁLCULO DE ENTROPIA E CLASSIFICAÇÃO DA FORÇA
 function classificaSenha(tamanhoAlfabeto) {
-    // Evita o cálculo matemático se o alfabeto for zero
     if (tamanhoAlfabeto === 0) {
-        forcaSenha.className = 'forca fraca';
+        forcaSenha.className = 'forca';
         return;
     }
 
     let entropia = tamanhoSenha * Math.log2(tamanhoAlfabeto);
-    forcaSenha.classList.remove('fraca', 'media', 'forte');
+    forcaSenha.className = 'forca'; // Limpa as classes de cor anteriores
 
     if (entropia > 57) {
         forcaSenha.classList.add('forte');
@@ -85,5 +87,5 @@ function classificaSenha(tamanhoAlfabeto) {
     }
 }
 
-// Inicializa a primeira geração de senha
+// Inicializa a primeira geração de senha assim que a página abre
 geraSenha();
