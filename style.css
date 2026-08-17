@@ -4,9 +4,9 @@
    TOKENS: paleta retropunk (terminal de segurança dos anos 80)
    =========================================================== */
 :root {
-    --fundo:        #0A0014;   /* quase-preto arroxeado, "vácuo" do terminal */
-    --painel:       #150726;   /* painéis/caixas */
-    --painel-claro: #1F0B38;   /* campo da senha */
+    --fundo:        #ff0000;   /* quase-preto arroxeado, "vácuo" do terminal */
+    --painel:       #bd1a1a;   /* painéis/caixas */
+    --painel-claro: #e86d6d;   /* campo da senha */
     --magenta:      #FF2E8A;   /* acento primário / perigo / títulos */
     --ciano:        #00F0FF;   /* acento secundário / interativo */
     --ambar:        #FFB000;   /* alertas, força média */
