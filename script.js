@@ -11,7 +11,8 @@ const numeros = '0123456789';
 const simbolos = '!@%*?';
 
 const campoSenha = document.querySelector('#campo-senha');
-const checkbox = document.querySelectorAll('.parametro-senha__checkbox');
+// CORREÇÃO: Ajustado o nome da classe conforme o HTML (hífen em vez de underline)
+const checkboxes = document.querySelectorAll('.parametro-senha-checkbox input');
 const botoes = document.querySelectorAll('.parametro-senha__botao');
 const forcaSenha = document.querySelector('.forca');
 
@@ -35,13 +36,25 @@ function aumentaTamanho() {
     geraSenha();
 }
 
+// Otimização: Adiciona evento de clique nas caixas para atualizar a senha em tempo real
+checkboxes.forEach(checkbox => {
+    checkbox.onchange = geraSenha;
+});
+
 // 3. GERAÇÃO DA SENHA ALEATÓRIA
 function geraSenha() {
     let alfabeto = '';
-    if (checkbox[0].checked) { alfabeto += letrasMaiusculas; }
-    if (checkbox[1].checked) { alfabeto += letrasMinusculas; }
-    if (checkbox[2].checked) { alfabeto += numeros; }
-    if (checkbox[3].checked) { alfabeto += simbolos; }
+    if (checkboxes[0].checked) { alfabeto += letrasMaiusculas; }
+    if (checkboxes[1].checked) { alfabeto += letrasMinusculas; }
+    if (checkboxes[2].checked) { alfabeto += numeros; }
+    if (checkboxes[3].checked) { alfabeto += simbolos; }
+
+    // CORREÇÃO: Evita falhas ou senhas com "undefined" se nada estiver marcado
+    if (alfabeto.length === 0) {
+        campoSenha.value = "Selecione uma opção";
+        classificaSenha(0);
+        return;
+    }
 
     let senha = '';
     for (let i = 0; i < tamanhoSenha; i++) {
@@ -54,6 +67,12 @@ function geraSenha() {
 
 // 4. CÁLCULO DE ENTROPIA E CLASSIFICAÇÃO DA FORÇA
 function classificaSenha(tamanhoAlfabeto) {
+    // Evita o cálculo matemático se o alfabeto for zero
+    if (tamanhoAlfabeto === 0) {
+        forcaSenha.className = 'forca fraca';
+        return;
+    }
+
     let entropia = tamanhoSenha * Math.log2(tamanhoAlfabeto);
     forcaSenha.classList.remove('fraca', 'media', 'forte');
 
