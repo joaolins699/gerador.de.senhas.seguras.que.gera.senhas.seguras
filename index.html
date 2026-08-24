@@ -1,36 +1,48 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de senha</title>
+    <title>SENHA//TERMINAL_88</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+    <!-- Camada de scanlines + ruído de CRT, fica por cima de tudo via CSS -->
+    <div class="crt-overlay"></div>
+    <div class="crt-flicker"></div>
+
     <section class="conteudo">
+
         <div class="conteudo-titulo">
-            <img src="unlock.png" alt="cadeado fechado">
-            <h2 class="titulo-principal">Gerador de senhas</h2>
-            <h3 class="titulo-secundario">Gere instantaneamente uma senha aleatória e segura</h3>
+            <p class="boot-linha">SYS.BOOT :: MÓDULO DE SEGURANÇA v2.5</p>
+            <h2 class="titulo-principal glitch" data-texto="GERADOR::SENHAS">GERADOR::SENHAS</h2>
+            <h3 class="titulo-secundario">// crie chaves de acesso não rastreáveis</h3>
         </div>
+
         <div class="conteudo-senha">
-            <label for="senha">Senha</label>
-            <input name="senha" type="text" id="campo-senha" readonly>
+            <label for="campo-senha">SENHA_ATUAL</label>
+            <div class="campo-senha-linha">
+                <span class="prompt">&gt;</span>
+                <input name="senha" type="text" id="campo-senha" readonly>
+                <button class="botao-copiar" id="botao-copiar" title="Copiar senha">COPIAR</button>
+            </div>
         </div>
+
         <div class="parametro">
-            <h3 class="parametro-titulo">Personalize sua senha</h3>
+            <h3 class="parametro-titulo">CONFIG// personalize sua senha</h3>
+
             <div class="parametro-coluna__senha">
+
                 <div class="parametro-senha">
                     <h4 class="parametro-senha__titulo">Número de caracteres</h4>
                     <div class="parametro-senha-botoes">
-                        <button class="parametro-senha__botao">-</button>
+                        <button class="parametro-senha__botao" id="botao-menos">-</button>
                         <p class="parametro-senha__texto">12</p>
-                        <button class="parametro-senha__botao">+</button>
+                        <button class="parametro-senha__botao" id="botao-mais">+</button>
                     </div>
-                </div>               
+                </div>
+
                 <div class="parametro-senha">
                     <h4 class="parametro-senha__titulo">Características da senha</h4>
                     <div class="parametro-senha-checkbox">
@@ -49,7 +61,12 @@
                         <input name="simbolo" type="checkbox" class="checkbox">
                         <label for="simbolo">Símbolos</label>
                     </div>
+                    <div class="parametro-senha-checkbox">
+                        <input name="emoji" type="checkbox" class="checkbox">
+                        <label for="emoji">Emojis 👾</label>
+                    </div>
                 </div>
+
                 <div class="parametro-senha">
                     <h4 class="parametro-senha__titulo">Força da senha</h4>
                     <div class="barra"></div>
@@ -61,8 +78,15 @@
                     </div>
                     <p class="entropia"></p>
                 </div>
+
             </div>
         </div>
+
+        <button class="botao-gerar" id="botao-gerar">[ GERAR NOVA SENHA ]</button>
+
+        <p class="rodape">TERMINAL_88 // conexão criptografada // sem logs mantidos</p>
     </section>
+
     <script src="script.js"></script>
-</body> 
+</body>
+</html>
